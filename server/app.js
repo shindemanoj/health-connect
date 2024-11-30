@@ -1,17 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 require('dotenv').config();
+
+const gymRoutes = require('./routes/gymRoutes');
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-// Sample Route
-app.get('/', (req, res) => {
-    res.send('Health Connect API is running...');
-});
+app.use('/api/gyms', gymRoutes);
 
-// Start Server
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
