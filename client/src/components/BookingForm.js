@@ -18,15 +18,23 @@ const BookingForm = ({ gymId, gymName, className, onClose }) => {
     };
 
     return (
-        <div style={{ border: '1px solid #ccc', padding: '16px', marginTop: '16px' }}>
-            <h3>Book {className} at {gymName}</h3>
+        <div className="card p-4 mt-4 shadow-sm">
+            <h3 className="card-title">Book {className} at {gymName}</h3>
             <form onSubmit={handleSubmit}>
-                <button type="submit">Confirm Booking</button>
-                <button type="button" onClick={onClose} style={{ marginLeft: '10px' }}>
-                    Cancel
-                </button>
+                <div className="d-flex justify-content-between mt-3">
+                    <button type="submit" className="btn btn-success">
+                        Confirm Booking
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="btn btn-secondary"
+                    >
+                        Cancel
+                    </button>
+                </div>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className={`mt-3 ${message.includes('Failed') ? 'text-danger' : 'text-success'}`}>{message}</p>}
         </div>
     );
 };

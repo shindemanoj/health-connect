@@ -13,11 +13,22 @@ const GymCard = ({ gym, onBookNow }) => {
     };
 
     return (
-        <div style={{ border: '1px solid #ccc', padding: '16px', marginBottom: '16px' }}>
-            <h3>{gym.name}</h3>
-            <p>{gym.location}</p>
-            <p>{gym.distance} km away</p>
-            <button onClick={handleBookNow}>Book Now</button>
+        <div className="card mb-4 shadow-sm">
+            <div className="card-body">
+                <h5 className="card-title">{gym.name}</h5>
+                <p className="card-text">
+                    <strong>Location:</strong> {gym.location}
+                </p>
+                <p className="card-text">
+                    <strong>Distance:</strong> {gym.distance} km away
+                </p>
+                <button
+                    className="btn btn-primary"
+                    onClick={handleBookNow}
+                >
+                    Book Now
+                </button>
+            </div>
         </div>
     );
 };

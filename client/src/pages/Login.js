@@ -21,7 +21,7 @@ const Login = () => {
         setError('');
 
         try {
-            const { data } = await axios.post('http://localhost:5000/api/users/login', {
+            const { data } = await axios.post('http://localhost:5001/api/users/login', {
                 email,
                 password,
             });
@@ -35,33 +35,50 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <h2 className="text-center">Login</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">
+                                Email:
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                className="form-control"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">
+                                Password:
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                className="form-control"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100">
+                            Login
+                        </button>
+                    </form>
+                    {error && <p className="text-danger mt-2">{error}</p>}
+                    <p className="mt-3 text-center">
+                        Don't have an account?{' '}
+                        <a href="/register" className="link-primary">
+                            Register here
+                        </a>
+                    </p>
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <p>
-                Don't have an account? <a href="/register">Register here</a>
-            </p>
+            </div>
         </div>
     );
 };

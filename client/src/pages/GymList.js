@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GymCard from '../components/GymCard';
+import LogoutButton from '../components/LogoutButton';
 
 const GymList = () => {
     const [gyms, setGyms] = useState([]);
@@ -20,14 +21,21 @@ const GymList = () => {
     }, []);
 
     return (
-        <div>
-            <h2>Nearby Gyms</h2>
+        <div className="container mt-4">
+            <LogoutButton />
+
+            <h2 className="mb-4">Nearby Gyms</h2>
+
             {gyms.length > 0 ? (
-                gyms.map((gym) => (
-                    <Link to={`/gym/${gym.id}`} key={gym.id} style={{ textDecoration: 'none' }}>
-                        <GymCard gym={gym} />
-                    </Link>
-                ))
+                <div className="row">
+                    {gyms.map((gym) => (
+                        <div className="col-md-4 mb-4" key={gym.id}>
+                            <Link to={`/gym/${gym.id}`} style={{ textDecoration: 'none' }}>
+                                <GymCard gym={gym} />
+                            </Link>
+                        </div>
+                    ))}
+                </div>
             ) : (
                 <p>No gyms available in your area.</p>
             )}
