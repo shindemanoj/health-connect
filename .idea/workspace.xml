@@ -5,7 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3368cc0-c834-4545-9db9-1befabc65ba7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/components/BookingForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/GymList.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/pages/Register.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/controllers/bookingController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/controllers/userController.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/routes/bookingRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/routes/userRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/seed.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/GymList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.env" beforeDir="false" afterPath="$PROJECT_DIR$/server/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/models/gymModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/models/gymModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +103,8 @@
       <option name="presentableId" value="Default" />
       <updated>1732953734129</updated>
       <workItem from="1732953735219" duration="7400000" />
-      <workItem from="1732994909872" duration="1760000" />
+      <workItem from="1732994909872" duration="3331000" />
+      <workItem from="1733036069143" duration="4085000" />
     </task>
     <servers />
   </component>
