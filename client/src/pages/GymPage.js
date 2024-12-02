@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import BookingForm from '../components/BookingForm';
+import LogoutButton from '../components/LogoutButton';
+import GymCard from '../components/GymCard';
 
 const GymPage = () => {
     const { gymId } = useParams(); // Get gym ID from the URL
@@ -9,6 +11,11 @@ const GymPage = () => {
     const [gym, setGym] = useState(null);
     const [classes, setClasses] = useState([]);
     const [selectedClass, setSelectedClass] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    // Get userId from localStorage
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         const fetchGymDetails = async () => {
@@ -16,37 +23,58 @@ const GymPage = () => {
                 const response = await axios.get(`http://localhost:5001/api/gyms/${gymId}`);
                 setGym(response.data.gym); // Set gym details
                 setClasses(response.data.classes); // Set associated classes
-            } catch (error) {
-                console.error('Error fetching gym details:', error);
+            } catch (err) {
+                console.error('Error fetching gym details:', err);
+                setError('Failed to load gym details. Please try again later.');
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchGymDetails();
     }, [gymId]);
 
-    const handleClassSelect = (className) => {
-        setSelectedClass(className);
+    const handleClassSelect = (classItem) => {
+        setSelectedClass(classItem);
     };
+
+    if (loading) {
+        return (
+            <div className="container mt-4">
+                <LogoutButton />
+                <div className="d-flex justify-content-center mt-5">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="container mt-4">
+                <LogoutButton />
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>
+                <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+                    Back to Gym List
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="container mt-4">
+            <LogoutButton />
             <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
                 Back to Gym List
             </button>
 
             {gym ? (
                 <>
-                    <div className="card mb-4">
-                        <div className="card-body">
-                            <h2 className="card-title">{gym.name}</h2>
-                            <p className="card-text">
-                                <strong>Location:</strong> {gym.location}
-                            </p>
-                            <p className="card-text">
-                                <strong>Distance:</strong> {gym.distance} km away
-                            </p>
-                        </div>
-                    </div>
+                    <GymCard gym={gym} isGymPage={true} />
 
                     <h3>Available Classes</h3>
                     {classes.length > 0 ? (
@@ -58,7 +86,7 @@ const GymPage = () => {
                                     </div>
                                     <button
                                         className="btn btn-primary btn-sm"
-                                        onClick={() => handleClassSelect(classItem.name)}
+                                        onClick={() => handleClassSelect(classItem)} // Pass the entire classItem
                                     >
                                         Book
                                     </button>
@@ -66,20 +94,21 @@ const GymPage = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p>No classes available for this gym.</p>
+                        <div className="alert alert-info">No classes available for this gym.</div>
                     )}
 
                     {selectedClass && (
                         <BookingForm
                             gymId={gym.id}
                             gymName={gym.name}
-                            className={selectedClass}
+                            classId={selectedClass.id}
+                            userId={userId}  // Get userId from localStorage
                             onClose={() => setSelectedClass('')} // Reset selected class after booking
                         />
                     )}
                 </>
             ) : (
-                <p>Loading gym details...</p>
+                <div className="alert alert-warning">Gym details not found.</div>
             )}
         </div>
     );

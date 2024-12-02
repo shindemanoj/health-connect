@@ -79,51 +79,51 @@ The React app will run on http://localhost:3000.
 
 ### Authentication
 
-	•	POST /api/auth/register - Register a new user.
-	•	POST /api/auth/login - Login a user and get a JWT token.
+		POST /api/auth/register - Register a new user.
+		POST /api/auth/login - Login a user and get a JWT token.
 
 ### Gym Data
 
-	•	GET /api/gyms - Get a list of all gyms.
-	•	GET /api/gyms/:gymId - Get detailed information about a gym (including classes).
+		GET /api/gyms - Get a list of all gyms.
+		GET /api/gyms/:gymId - Get detailed information about a gym (including classes).
 
 ### Bookings
 
-	•	POST /api/bookings - Create a new booking for a class.
-	•	GET /api/bookings - Get all bookings for the logged-in user.
+		POST /api/bookings - Create a new booking for a class.
+		GET /api/bookings - Get all bookings for the logged-in user.
 
 ## Database Schema
 
 ### Users Table
 
-	•	id (Primary Key)
-	•	name (VARCHAR)
-	•	email (VARCHAR, Unique)
-	•	password (VARCHAR)
-	•	credits (INTEGER)
+		id (Primary Key)
+		name (VARCHAR)
+		email (VARCHAR, Unique)
+		password (VARCHAR)
+		credits (INTEGER)
 
 ### Gyms Table
 
-	•	id (Primary Key)
-	•	name (VARCHAR)
-	•	location (VARCHAR)
-	•	distance (FLOAT)
-	•	description (TEXT)
+		id (Primary Key)
+		name (VARCHAR)
+		location (VARCHAR)
+		distance (FLOAT)
+		description (TEXT)
 
 ### Classes Table
 
-	•	id (Primary Key)
-	•	gym_id (Foreign Key: gyms.id)
-	•	name (VARCHAR)
-	•	schedule (TIMESTAMP)
-	•	capacity (INTEGER)
+		id (Primary Key)
+		gym_id (Foreign Key: gyms.id)
+		name (VARCHAR)
+		schedule (TIMESTAMP)
+		capacity (INTEGER)
 
 ### Bookings Table
 
-	•	id (Primary Key)
-	•	user_id (Foreign Key: users.id)
-	•	gym_id (Foreign Key: gyms.id)
-	•	class_id (Foreign Key: classes.id)
+		id (Primary Key)
+		user_id (Foreign Key: users.id)
+		gym_id (Foreign Key: gyms.id)
+		class_id (Foreign Key: classes.id)
 
 ## Contributing
 
@@ -139,6 +139,4 @@ We welcome contributions to improve this project. If you’d like to contribute,
 This project is licensed under the MIT License - see the LICENSE file for details.
 ```
 This `README.md` file gives an overview of the project, setup instructions, API endpoints, and information about the database schema, all tailored to your gym booking app.
-
-Let me know if you would like to add or modify anything further!
 ```

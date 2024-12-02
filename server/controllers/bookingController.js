@@ -1,16 +1,27 @@
-const pool = require('../config/db');
+// controllers/bookingController.js
+const bookingModel = require('../models/bookingModel');
 
-const bookClass = async (req, res) => {
-    const { userId, gymId, className } = req.body;
+// Handle booking creation
+const createBooking = async (req, res) => {
+    const { userId, gymId, classId } = req.body;
+
+    // Validate input
+    if (!userId || !gymId || !classId) {
+        return res.status(400).json({ error: 'userId, gymId, and classId are required.' });
+    }
+
     try {
-        const result = await pool.query(
-            'INSERT INTO bookings (user_id, gym_id, class_name) VALUES ($1, $2, $3) RETURNING *',
-            [userId, gymId, className]
-        );
-        res.status(201).json({ message: 'Class booked', booking: result.rows[0] });
+        const result = await bookingModel.addBooking(userId, gymId, classId);
+
+        if (result.success) {
+            return res.status(201).json({ message: result.message });
+        } else {
+            return res.status(400).json({ error: result.message });
+        }
     } catch (error) {
-        res.status(500).json({ error: 'Booking failed' });
+        console.error('Error creating booking:', error);
+        return res.status(500).json({ error: 'An error occurred while processing the booking.' });
     }
 };
 
-module.exports = { bookClass };
+module.exports = { createBooking };

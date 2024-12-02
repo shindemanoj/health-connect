@@ -6,9 +6,9 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Redirect logged-in users to the gyms page
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -19,18 +19,24 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setLoading(true); // Start loader
 
         try {
             const { data } = await axios.post('http://localhost:5001/api/users/login', {
                 email,
                 password,
             });
-            // Store token in localStorage
             localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user)); // Store user details (optional)
-            navigate('/gyms'); // Redirect to gyms page on successful login
+            localStorage.setItem('userId', data.userId);
+            navigate('/gyms');
         } catch (err) {
-            setError('Invalid email or password. Please try again.');
+            if (err.response && err.response.data && err.response.data.error) {
+                setError(err.response.data.error);
+            } else {
+                setError('Something went wrong. Please try again.');
+            }
+        } finally {
+            setLoading(false); // Stop loader
         }
     };
 
@@ -66,11 +72,19 @@ const Login = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary w-100">
-                            Login
+                        <button
+                            type="submit"
+                            className="btn btn-primary w-100"
+                            disabled={loading} // Disable button while loading
+                        >
+                            {loading ? 'Logging in...' : 'Login'}
                         </button>
                     </form>
-                    {error && <p className="text-danger mt-2">{error}</p>}
+                    {error && (
+                        <div className="alert alert-danger mt-2" role="alert">
+                            {error}
+                        </div>
+                    )}
                     <p className="mt-3 text-center">
                         Don't have an account?{' '}
                         <a href="/register" className="link-primary">

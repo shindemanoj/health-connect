@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const GymCard = ({ gym, onBookNow }) => {
+const GymCard = ({ gym, onBookNow, isGymPage }) => {
     const navigate = useNavigate();
 
     const handleBookNow = () => {
@@ -22,12 +22,17 @@ const GymCard = ({ gym, onBookNow }) => {
                 <p className="card-text">
                     <strong>Distance:</strong> {gym.distance} km away
                 </p>
-                <button
-                    className="btn btn-primary"
-                    onClick={handleBookNow}
-                >
-                    Book Now
-                </button>
+                <p className="card-text">
+                    <strong>Description:</strong> {gym.description}
+                </p>
+                {!isGymPage && (
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleBookNow}
+                    >
+                        Book Now
+                    </button>
+                )}
             </div>
         </div>
     );
