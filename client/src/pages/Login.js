@@ -16,16 +16,31 @@ const Login = () => {
         }
     }, [navigate]);
 
+    const hashPassword = async (password) => {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        setLoading(true); // Start loader
+        setLoading(true);
 
         try {
+            // Step 1: Hash password directly
+            const hashedPassword = await hashPassword(password);
+
+            // Step 2: Send email and hashed password to server
             const { data } = await axios.post('http://localhost:5001/api/users/login', {
                 email,
-                password,
+                hashedPassword,
             });
+
+            // Step 3: Save token and redirect
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('role', data.role);
@@ -37,7 +52,7 @@ const Login = () => {
                 setError('Something went wrong. Please try again.');
             }
         } finally {
-            setLoading(false); // Stop loader
+            setLoading(false);
         }
     };
 
@@ -76,7 +91,7 @@ const Login = () => {
                         <button
                             type="submit"
                             className="btn btn-primary w-100"
-                            disabled={loading} // Disable button while loading
+                            disabled={loading}
                         >
                             {loading ? 'Logging in...' : 'Login'}
                         </button>

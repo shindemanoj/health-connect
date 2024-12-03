@@ -110,7 +110,7 @@ The React app will run on http://localhost:3000.
 		location (VARCHAR)
 		distance (FLOAT)
 		description (TEXT)
-     		owner_id  (Foreign Key: users.id)
+        owner_id  (Foreign Key: users.id)
 
 ### Classes Table
 

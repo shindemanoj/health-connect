@@ -1,4 +1,3 @@
-// src/pages/GymOwnerRegister.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -10,20 +9,34 @@ const GymOwnerRegister = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Function to hash the password using SHA-256
+    const hashPassword = async (password) => {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
+            // Hash the password before sending it to the server
+            const hashedPassword = await hashPassword(password);
+
             await axios.post('http://localhost:5001/api/users/gym-owner/register', {
                 name,
                 email,
-                password,
+                password: hashedPassword, // Send hashed password
             });
+
             // After successful registration, navigate to the login page
             navigate('/gym-owner/login');
         } catch (err) {
-            setError(err.response ? err.response.data.error : 'Server error');
+            setError(err.response?.data?.error || 'Server error');
         }
     };
 

@@ -8,17 +8,30 @@ const GymOwnerLogin = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Hash password using SHA-256
+    const hashPassword = async (password) => {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('');
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
+            // Hash the password before sending it to the server
+            const hashedPassword = await hashPassword(password);
+
             const { data } = await axios.post('http://localhost:5001/api/users/login', {
                 email,
-                password,
+                hashedPassword,
             });
 
-            // Ensure only gym owners can login
+            // Ensure only gym owners can log in
             if (data.role !== 'gym_owner') {
                 setError('Unauthorized access. This login is for Gym Owners only.');
                 return;

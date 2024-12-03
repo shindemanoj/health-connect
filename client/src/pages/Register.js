@@ -7,14 +7,28 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
+
+    const hashPassword = async (password) => {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map((byte) => byte.toString(16).padStart(2, '0'))
+            .join('');
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5001/api/users/register', { name, email, password });
+            // Hash the password directly
+            const hashedPassword = await hashPassword(password);
+
+            // Send the user data to the server
+            await axios.post('http://localhost:5001/api/users/register', { name, email, password: hashedPassword });
+
             setMessage('Registration successful! Redirecting to login...');
-            setTimeout(() => navigate('/login'), 2000); // Redirect after 2 seconds
+            setTimeout(() => navigate('/login'), 2000);
         } catch (error) {
             setMessage('Registration failed. Please try again.');
         }
