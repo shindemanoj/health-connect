@@ -1,11 +1,11 @@
 const pool = require('../config/db');
 
 // Create a gym
-const createGym = async (name, location, description, ownerId) => {
+const createGym = async (name, location, description, distance, ownerId) => {
     try {
         const result = await pool.query(
-            'INSERT INTO gyms (name, location, description, owner_id) VALUES ($1, $2, $3, $4) RETURNING *',
-            [name, location, description, ownerId]
+            'INSERT INTO gyms (name, location, description, distance, owner_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [name, location, description, distance, ownerId]
         );
         return result.rows[0];
     } catch (error) {

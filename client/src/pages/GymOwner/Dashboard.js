@@ -1,30 +1,30 @@
+// src/pages/GymOwnerDashboard.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LogoutButton from '../../components/LogoutButton';
 import { useNavigate } from 'react-router-dom';
+import ShowClasses from '../../components/ShowClasses';
 
 const GymOwnerDashboard = () => {
     const [gyms, setGyms] = useState([]);
-    const [classes, setClasses] = useState({});
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('role');
     const navigate = useNavigate();
 
-    // Fetch gyms owned by the user
     useEffect(() => {
         const fetchGyms = async () => {
             try {
                 const { data } = await axios.get('http://localhost:5001/api/gym-owner/dashboard', {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        userId,
-                        role,
+                        userId: userId,
+                        role: role,
                     },
                 });
                 setGyms(data.gyms || []);
             } catch (err) {
-                console.error('Error fetching gyms:', err);
+                console.error("Error fetching gyms:", err);
                 setGyms([]);
             }
         };
@@ -32,27 +32,6 @@ const GymOwnerDashboard = () => {
         fetchGyms();
     }, [token, userId, role]);
 
-    // Fetch classes for a specific gym
-    const fetchClassesForGym = async (gymId) => {
-        try {
-            const { data } = await axios.get(`http://localhost:5001/api/gym-owner/gyms/${gymId}/classes`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    userId,
-                    role,
-                },
-            });
-            console.log('Classes fetched for gym:', gymId, data); // Debug log
-            setClasses((prev) => ({
-                ...prev,
-                [gymId]: data, // Update the classes state for the specific gym
-            }));
-        } catch (err) {
-            console.error(`Error fetching classes for gym ${gymId}:`, err);
-        }
-    };
-
-    // Navigate to add gym or class
     const handleAddGym = () => {
         navigate('/gym-owner/add-gym');
     };
@@ -79,6 +58,9 @@ const GymOwnerDashboard = () => {
                                         <strong>Location:</strong> {gym.location}
                                     </p>
                                     <p className="card-text">
+                                        <strong>Distance:</strong> {gym.distance}
+                                    </p>
+                                    <p className="card-text">
                                         <strong>Description:</strong> {gym.description}
                                     </p>
                                     <button
@@ -87,44 +69,7 @@ const GymOwnerDashboard = () => {
                                     >
                                         Add Class
                                     </button>
-                                    <button
-                                        className="btn btn-secondary"
-                                        onClick={() => fetchClassesForGym(gym.id)}
-                                        data-bs-toggle="collapse"
-                                        data-bs-target={`#classes-${gym.id}`}
-                                        aria-expanded="false"
-                                        aria-controls={`classes-${gym.id}`}
-                                    >
-                                        Show Classes
-                                    </button>
-                                    <div
-                                        className="collapse mt-3"
-                                        id={`classes-${gym.id}`}
-                                    >
-                                        {classes[gym.id] && classes[gym.id].length > 0 ? (
-                                            <div className="card card-body">
-                                                <h6>Classes:</h6>
-                                                <ul className="list-group">
-                                                    {classes[gym.id].map((gymClass) => (
-                                                        <li
-                                                            className="list-group-item d-flex justify-content-between align-items-center"
-                                                            key={gymClass.id}
-                                                        >
-                                                            <span>
-                                                                <strong>{gymClass.name}</strong> -{' '}
-                                                                {new Date(gymClass.schedule).toLocaleString()}
-                                                            </span>
-                                                            <span className="badge bg-primary rounded-pill">
-                                                                {gymClass.capacity} spots
-                                                            </span>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ) : (
-                                            <p className="text-muted">No classes available.</p>
-                                        )}
-                                    </div>
+                                    <ShowClasses gymId={gym.id}/>
                                 </div>
                             </div>
                         </div>

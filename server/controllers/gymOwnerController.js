@@ -2,11 +2,11 @@ const gymOwnerModel = require('../models/gymOwnerModel');
 
 // Create a gym
 const createGym = async (req, res) => {
-    const { name, location, description } = req.body;
+    const { name, location, description, distance } = req.body;
     const ownerId = req.body.userId;
 
     try {
-        const gym = await gymOwnerModel.createGym(name, location, description, ownerId);
+        const gym = await gymOwnerModel.createGym(name, location, description, distance, ownerId);
         res.status(201).json(gym);
     } catch (error) {
         res.status(500).json({ error: 'Failed to create gym' });

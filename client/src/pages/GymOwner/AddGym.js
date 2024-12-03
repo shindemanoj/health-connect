@@ -7,6 +7,7 @@ const GymOwnerAddGym = () => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
+    const [distance, setDistance] = useState(0); // Added distance state
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -20,13 +21,12 @@ const GymOwnerAddGym = () => {
         try {
             const { data } = await axios.post(
                 'http://localhost:5001/api/gym-owner/gyms',
-
-                { name, location, description, userId },
+                { name, location, description, distance, userId }, // Include distance
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         userId: userId,
-                        role: role
+                        role: role,
                     },
                 }
             );
@@ -35,6 +35,7 @@ const GymOwnerAddGym = () => {
                 navigate('/gym-owner/dashboard');
             }
         } catch (err) {
+            console.error('Error adding gym:', err);
             setError('Failed to add gym. Please try again.');
         }
     };
