@@ -101,6 +101,7 @@ The React app will run on http://localhost:3000.
 		email (VARCHAR, Unique)
 		password (VARCHAR)
 		credits (INTEGER)
+  		role  (VARCHAR)
 
 ### Gyms Table
 
@@ -109,6 +110,7 @@ The React app will run on http://localhost:3000.
 		location (VARCHAR)
 		distance (FLOAT)
 		description (TEXT)
+     		owner_id  (Foreign Key: users.id)
 
 ### Classes Table
 
