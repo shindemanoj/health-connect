@@ -4,7 +4,7 @@ import axios from 'axios';
 import GymCard from '../components/GymCard';
 import LogoutButton from '../components/LogoutButton';
 
-const GymList = () => {
+const CustomerGymList = () => {
     const [gyms, setGyms] = useState([]);
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const GymList = () => {
                 <div className="row">
                     {gyms.map((gym) => (
                         <div className="col-md-4 mb-4" key={gym.id}>
-                            <Link to={`/gym/${gym.id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/gyms/${gym.id}`} style={{ textDecoration: 'none' }}>
                                 <GymCard gym={gym} />
                             </Link>
                         </div>
@@ -43,4 +43,4 @@ const GymList = () => {
     );
 };
 
-export default GymList;
+export default CustomerGymList;

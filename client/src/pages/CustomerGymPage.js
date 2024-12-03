@@ -5,7 +5,7 @@ import BookingForm from '../components/BookingForm';
 import LogoutButton from '../components/LogoutButton';
 import GymCard from '../components/GymCard';
 
-const GymPage = () => {
+const CustomerGymPage = () => {
     const { gymId } = useParams(); // Get gym ID from the URL
     const navigate = useNavigate();
     const [gym, setGym] = useState(null);
@@ -114,4 +114,4 @@ const GymPage = () => {
     );
 };
 
-export default GymPage;
+export default CustomerGymPage;

@@ -1,43 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Login = () => {
+const GymOwnerLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            navigate('/gyms');
-        }
-    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        setLoading(true); // Start loader
 
         try {
             const { data } = await axios.post('http://localhost:5001/api/users/login', {
                 email,
                 password,
             });
+
+            // Ensure only gym owners can login
+            if (data.role !== 'gym_owner') {
+                setError('Unauthorized access. This login is for Gym Owners only.');
+                return;
+            }
+
+            // Store token in localStorage and navigate to the dashboard
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('role', data.role);
-            navigate('/gyms');
+            navigate('/gym-owner/dashboard');
         } catch (err) {
-            if (err.response && err.response.data && err.response.data.error) {
-                setError(err.response.data.error);
-            } else {
-                setError('Something went wrong. Please try again.');
-            }
-        } finally {
-            setLoading(false); // Stop loader
+            setError(err.response?.data?.error || 'Login failed. Please check your credentials.');
         }
     };
 
@@ -45,8 +38,8 @@ const Login = () => {
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <h2 className="text-center">Login</h2>
-                    <form onSubmit={handleSubmit}>
+                    <h2 className="text-center">Gym Owner Login</h2>
+                    <form onSubmit={handleSubmit} className="mt-4">
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">
                                 Email:
@@ -55,6 +48,7 @@ const Login = () => {
                                 type="email"
                                 id="email"
                                 className="form-control"
+                                placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -68,29 +62,22 @@ const Login = () => {
                                 type="password"
                                 id="password"
                                 className="form-control"
+                                placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary w-100"
-                            disabled={loading} // Disable button while loading
-                        >
-                            {loading ? 'Logging in...' : 'Login'}
+                        <button type="submit" className="btn btn-primary w-100">
+                            Login
                         </button>
+                        {error && <p className="text-danger mt-3">{error}</p>}
                     </form>
-                    {error && (
-                        <div className="alert alert-danger mt-2" role="alert">
-                            {error}
-                        </div>
-                    )}
                     <p className="mt-3 text-center">
                         Don't have an account?{' '}
-                        <a href="/register" className="link-primary">
-                            Register here
-                        </a>
+                        <Link to="/gym-owner/register" className="link-primary">
+                            Register as Gym Owner
+                        </Link>
                     </p>
                 </div>
             </div>
@@ -98,4 +85,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default GymOwnerLogin;

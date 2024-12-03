@@ -7,10 +7,18 @@ const LogoutButton = () => {
     const handleLogout = () => {
         // Clear authentication token from localStorage
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem('userId');
 
-        // Redirect to login page
-        navigate('/login');
+        // Redirect to login page based on the role
+        const role = localStorage.getItem('role');
+
+        if (role === 'gym_owner') {
+            localStorage.removeItem('role');
+            navigate('/gym-owner/login'); // Redirect to gym owner's login page
+        } else {
+            localStorage.removeItem('role');
+            navigate('/login'); // Redirect to general user login page
+        }
     };
 
     return (

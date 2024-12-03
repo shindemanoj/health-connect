@@ -1,8 +1,15 @@
+// routes/userRoutes.js
 const express = require('express');
-const { registerUser, loginUser } = require('../controllers/userController');
 const router = express.Router();
+const userController = require('../controllers/userController');
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
+// User registration (for customers)
+router.post('/register', userController.registerUser);
+
+// Gym Owner registration
+router.post('/gym-owner/register', userController.registerGymOwner);  // New route for Gym Owners
+
+// Login (for both customers and gym owners)
+router.post('/login', userController.loginUser);
 
 module.exports = router;
