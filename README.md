@@ -1,4 +1,4 @@
-# Health Connect App
+# Health Connect App (WellnessMap)
 
 ## Overview
 
