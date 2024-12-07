@@ -1,0 +1,57 @@
+services:
+  client:
+    build:
+      context: ./client
+      target: development
+    ports:
+      - 3000
+    stdin_open: true
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      - react-express
+    depends_on:
+      - server
+
+  server:
+    restart: always
+    build:
+      context: ./server
+      target: development
+    environment:
+      - PG_DBNAME=postgres
+      - PG_HOST=db
+      - PG_USER=postgres
+      - PG_PASSWORD=password
+      - JWT_SECRET=secret
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    networks:
+      - express-db
+      - react-express
+    expose:
+      - 5001
+
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=password
+    networks:
+      - express-db
+    ports:
+      - 5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      -
+networks:
+  react-express:
+  express-db:
+
+volumes:
+  db-data:
