@@ -5,6 +5,7 @@ const fetchGyms = async (req, res) => {
         const gyms = await getGyms();
         res.status(200).json(gyms);
     } catch (err) {
+        console.log(err);
         res.status(500).json({ error: 'Failed to fetch gyms' });
     }
 };

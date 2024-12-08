@@ -6,13 +6,25 @@ import LogoutButton from '../components/LogoutButton';
 
 const CustomerGymList = () => {
     const [gyms, setGyms] = useState([]);
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const role = localStorage.getItem('role');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchGyms = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/gyms');
+                const response = await axios.get('http://localhost:5001/api/gyms',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            userId: userId,
+                            role: role,
+                        },
+                    });
                 setGyms(response.data); // Set gyms list
             } catch (error) {
+                setError(error.error);
                 console.error('Error fetching gyms:', error);
             }
         };
@@ -25,7 +37,7 @@ const CustomerGymList = () => {
             <LogoutButton />
 
             <h2 className="mb-4">Nearby Gyms</h2>
-
+            {error && <div className="alert alert-danger">{error}</div>}
             {gyms.length > 0 ? (
                 <div className="row">
                     {gyms.map((gym) => (

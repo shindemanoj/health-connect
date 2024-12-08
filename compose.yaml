@@ -4,7 +4,7 @@ services:
       context: ./client
       target: development
     ports:
-      - 3000
+      - "3000:3000"
     stdin_open: true
     volumes:
       - ./client:/usr/src/app
@@ -21,11 +21,13 @@ services:
       context: ./server
       target: development
     environment:
-      - PG_DBNAME=postgres
+      - PG_DBNAME=wellness_map
       - PG_HOST=db
       - PG_USER=postgres
       - PG_PASSWORD=password
-      - JWT_SECRET=secret
+      - JWT_SECRET=03c45d79b7e0aac8aac3f41711eed8f962bac31c7c26dde8f43d8aa9b2a46ab8
+      - PORT=5001
+      - PG_PORT=5432
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
@@ -34,8 +36,8 @@ services:
     networks:
       - express-db
       - react-express
-    expose:
-      - 5001
+    ports:
+      - "5001:5001"
 
   db:
     image: postgres:12-alpine
@@ -45,10 +47,11 @@ services:
     networks:
       - express-db
     ports:
-      - 5432
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-      -
+      - ./server/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
 networks:
   react-express:
   express-db:
