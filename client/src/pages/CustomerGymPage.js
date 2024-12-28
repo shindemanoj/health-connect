@@ -20,7 +20,7 @@ const CustomerGymPage = () => {
     useEffect(() => {
         const fetchGymDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:5001/api/gyms/${gymId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/gyms/${gymId}`);
                 setGym(response.data.gym); // Set gym details
                 setClasses(response.data.classes); // Set associated classes
             } catch (err) {

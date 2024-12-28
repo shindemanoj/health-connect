@@ -17,7 +17,7 @@ const ShowClasses = ({ gymId }) => {
         setIsClassesLoaded(true); // Set to true when user clicks the button
 
         try {
-            const { data } = await axios.get(`http://localhost:5001/api/gym-owner/gyms/${gymId}/classes`, {
+            const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/gym-owner/gyms/${gymId}/classes`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     userId: userId,

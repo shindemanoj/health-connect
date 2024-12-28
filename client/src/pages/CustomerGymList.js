@@ -14,7 +14,7 @@ const CustomerGymList = () => {
     useEffect(() => {
         const fetchGyms = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/gyms',
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/gyms`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,

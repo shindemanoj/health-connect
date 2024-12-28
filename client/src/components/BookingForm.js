@@ -11,7 +11,7 @@ const BookingForm = ({ gymId, gymName, classId, onClose }) => {
         e.preventDefault();
         try {
             // Send booking request to the server
-            const response = await axios.post('http://localhost:5001/api/bookings', {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/bookings`, {
                 gymId,
                 classId,
                 userId, // Include userId in the request

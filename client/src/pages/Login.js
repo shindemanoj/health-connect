@@ -35,7 +35,7 @@ const Login = () => {
             const hashedPassword = await hashPassword(password);
 
             // Step 2: Send email and hashed password to server
-            const { data } = await axios.post('http://localhost:5001/api/users/login', {
+            const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, {
                 email,
                 hashedPassword,
             });

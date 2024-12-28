@@ -25,7 +25,7 @@ const Register = () => {
             const hashedPassword = await hashPassword(password);
 
             // Send the user data to the server
-            await axios.post('http://localhost:5001/api/users/register', { name, email, password: hashedPassword });
+            await axios.post(`${process.env.REACT_APP_API_URL}/users/register`, { name, email, password: hashedPassword });
 
             setMessage('Registration successful! Redirecting to login...');
             setTimeout(() => navigate('/login'), 2000);
